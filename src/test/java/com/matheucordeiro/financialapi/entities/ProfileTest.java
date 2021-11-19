@@ -1,16 +1,10 @@
 package com.matheucordeiro.financialapi.entities;
 
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
-@RunWith(SpringRunner.class)
 public class ProfileTest {
     @Test
     public void shouldCreateBuildProfileObject() {
@@ -23,5 +17,10 @@ public class ProfileTest {
                 .build();
 
         assertThat(profile);
+    }
+
+    @Test public void shouldProfileObjectNull() {
+        var profile = new Profile();
+        assertEquals(new Profile(), profile);
     }
 }
