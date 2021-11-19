@@ -3,11 +3,8 @@ package com.matheucordeiro.financialapi.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.matheucordeiro.financialapi.entities.Profile;
 import com.matheucordeiro.financialapi.services.ProfileService;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,8 +16,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -31,9 +28,6 @@ public class ProfileControllerUnitTest {
     @Autowired
     MockMvc mockMvc;
 
-    @Autowired
-    ProfileController profileController;
-
     @MockBean
     ProfileService profileService;
 
@@ -42,6 +36,16 @@ public class ProfileControllerUnitTest {
 
     @Test
     public void shouldGetAllProfiles() throws Exception {
+        var profiles = buildProfilesFake();
+
+        when(profileService.getAllProfiles()).thenReturn(profiles);
+
+        mockMvc.perform(get("/api/financial/profiles"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(profiles)));
+    }
+
+    private List<Profile> buildProfilesFake() {
         List<Profile> profiles = new ArrayList<>();
         var profileFirst = Profile.builder()
                 .id(1L)
@@ -62,10 +66,6 @@ public class ProfileControllerUnitTest {
         profiles.add(profileFirst);
         profiles.add(profileSecond);
 
-        when(profileService.getAllProfiles()).thenReturn(profiles);
-
-        mockMvc.perform(get("/api/financial/profiles"))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(profiles)));
+        return profiles;
     }
 }
