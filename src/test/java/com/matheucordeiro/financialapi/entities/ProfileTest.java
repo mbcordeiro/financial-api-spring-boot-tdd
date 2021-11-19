@@ -7,6 +7,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class ProfileTest {
@@ -20,6 +22,6 @@ public class ProfileTest {
                 .phone("9999999999")
                 .build();
 
-        assertNotNull(profile);
+        assertThat(profile);
     }
 }
