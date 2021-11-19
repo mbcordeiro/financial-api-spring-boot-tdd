@@ -44,6 +44,17 @@ public class ProfileControllerUnitTest {
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(profiles)));
     }
 
+    @Test
+    public void shouldGetProfileById() throws Exception {
+        var profile = buildProfileFake();
+
+        when(profileService.getProfileById(1L)).thenReturn(profile);
+
+        mockMvc.perform(get("/api/financial/profile/1"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(profile)));
+    }
+
     private List<Profile> buildProfilesFake() {
         List<Profile> profiles = new ArrayList<>();
         var profileFirst = Profile.builder()
@@ -66,5 +77,15 @@ public class ProfileControllerUnitTest {
         profiles.add(profileSecond);
 
         return profiles;
+    }
+
+    private Profile buildProfileFake() {
+        return Profile.builder()
+                .id(1L)
+                .name("Matheus Cordeiro")
+                .email("matheusdebarroscordeiro@gmail.com")
+                .cpf("111111111111")
+                .phone("9999999999")
+                .build();
     }
 }

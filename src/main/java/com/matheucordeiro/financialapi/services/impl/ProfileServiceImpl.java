@@ -17,4 +17,9 @@ public class ProfileServiceImpl implements ProfileService {
     public List<Profile> getAllProfiles() {
         return profileRepository.findAll();
     }
+
+    @Override
+    public Profile getProfileById(Long id) {
+        return profileRepository.getById(id);
+    }
 }
